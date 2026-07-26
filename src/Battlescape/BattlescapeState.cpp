@@ -88,7 +88,6 @@
 #include "../Mod/RuleInventory.h"
 #include "../Mod/RuleSoldier.h"
 #include "../Mod/RuleVideo.h"
-#include <algorithm>
 
 namespace OpenXcom
 {
