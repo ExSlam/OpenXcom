@@ -1038,6 +1038,8 @@ void scanModDir(const std::string& dirname, const std::string& basename, bool pr
 	const static std::set<std::string> standardMods = {
 		"Aliens_Pick_Up_Weapons",
 		"Aliens_Pick_Up_Weapons_TFTD",
+		"CustomUiSchemaCompanion",
+		"CustomUiSchemaTest",
 		"Demigod_Difficulty",
 		"Demigod_Difficulty_TFTD",
 		"Limit_Craft_Item_Capacities",
