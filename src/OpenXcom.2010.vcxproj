@@ -153,7 +153,7 @@
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(ProjectDir)..\bin\$(Platform)\"</Command>
+      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -185,7 +185,7 @@
       <MapExports>false</MapExports>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(ProjectDir)..\bin\$(Platform)\"</Command>
+      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -220,7 +220,7 @@
       <Profile>false</Profile>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(ProjectDir)..\bin\$(Platform)\"</Command>
+      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -255,7 +255,7 @@
       <Profile>false</Profile>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(ProjectDir)..\bin\$(Platform)\"</Command>
+      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -289,7 +289,7 @@
       <Profile>false</Profile>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(ProjectDir)..\bin\$(Platform)\"</Command>
+      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -323,7 +323,7 @@
       <Profile>false</Profile>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(ProjectDir)..\bin\$(Platform)\"</Command>
+      <Command>copy /y "$(ProjectDir)..\deps\lib\$(Platform)\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -587,6 +587,9 @@
     <ClCompile Include="md5.cpp" />
     <ClCompile Include="Menu\AbandonGameState.cpp" />
     <ClCompile Include="Menu\ConfirmLoadState.cpp" />
+    <ClCompile Include="Menu\CustomUiDataProvider.cpp" />
+    <ClCompile Include="Menu\CustomUiListState.cpp" />
+    <ClCompile Include="Menu\CustomUiState.cpp" />
     <ClCompile Include="Menu\CutsceneState.cpp" />
     <ClCompile Include="Menu\ListGamesState.cpp" />
     <ClCompile Include="Menu\ListLoadOriginalState.cpp" />
@@ -667,6 +670,7 @@
     <ClCompile Include="Mod\RuleCountry.cpp" />
     <ClCompile Include="Mod\RuleCraft.cpp" />
     <ClCompile Include="Mod\RuleCraftWeapon.cpp" />
+    <ClCompile Include="Mod\RuleCustomUi.cpp" />
     <ClCompile Include="Mod\RuleInventory.cpp" />
     <ClCompile Include="Mod\RuleItem.cpp" />
     <ClCompile Include="Mod\RuleManufacture.cpp" />
@@ -1078,6 +1082,9 @@
     <ClInclude Include="md5.h" />
     <ClInclude Include="Menu\AbandonGameState.h" />
     <ClInclude Include="Menu\ConfirmLoadState.h" />
+    <ClInclude Include="Menu\CustomUiDataProvider.h" />
+    <ClInclude Include="Menu\CustomUiListState.h" />
+    <ClInclude Include="Menu\CustomUiState.h" />
     <ClInclude Include="Menu\CutsceneState.h" />
     <ClInclude Include="Menu\ListGamesState.h" />
     <ClInclude Include="Menu\ListLoadOriginalState.h" />
@@ -1162,6 +1169,7 @@
     <ClInclude Include="Mod\RuleCountry.h" />
     <ClInclude Include="Mod\RuleCraft.h" />
     <ClInclude Include="Mod\RuleCraftWeapon.h" />
+    <ClInclude Include="Mod\RuleCustomUi.h" />
     <ClInclude Include="Mod\RuleInventory.h" />
     <ClInclude Include="Mod\RuleItem.h" />
     <ClInclude Include="Mod\RuleManufacture.h" />

@@ -80,6 +80,7 @@
 #include "RuleManufactureShortcut.h"
 #include "ExtraStrings.h"
 #include "RuleInterface.h"
+#include "RuleCustomUi.h"
 #include "RuleArcScript.h"
 #include "RuleEventScript.h"
 #include "RuleEvent.h"
@@ -775,6 +776,10 @@ Mod::~Mod()
 		delete pair.second;
 	}
 	for (auto& pair : _interfaces)
+	{
+		delete pair.second;
+	}
+	for (auto& pair : _customUis)
 	{
 		delete pair.second;
 	}
@@ -3480,6 +3485,15 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		}
 	}
 
+	for (const auto& ruleReader : iterateRulesSpecific("customUis"))
+	{
+		RuleCustomUi *rule = loadRule(ruleReader, &_customUis, &_customUisIndex, "id");
+		if (rule != 0)
+		{
+			rule->load(ruleReader, parsers);
+		}
+	}
+
 	for (const auto& ruleReader : iterateRulesSpecific("cutscenes"))
 	{
 		RuleVideo *rule = loadRule(ruleReader, &_videos);
@@ -5158,6 +5172,26 @@ int Mod::getPediaReplaceCraftFuelWithRangeType() const
 RuleInterface *Mod::getInterface(const std::string &id, bool error) const
 {
 	return getRule(id, "Interface", _interfaces, error);
+}
+
+/**
+ * Gets a declarative custom UI.
+ * @param id Stable custom UI id.
+ * @param error Throw when the id is unknown.
+ * @return Custom UI rules.
+ */
+RuleCustomUi *Mod::getCustomUi(const std::string &id, bool error) const
+{
+	return getRule(id, "Custom UI", _customUis, error);
+}
+
+/**
+ * Gets custom UI ids in ruleset load order.
+ * @return Ordered custom UI ids.
+ */
+const std::vector<std::string> &Mod::getCustomUiList() const
+{
+	return _customUisIndex;
 }
 
 /**

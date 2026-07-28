@@ -89,6 +89,7 @@ class ExtraStrings;
 class RuleCommendations;
 class StatString;
 class RuleInterface;
+class RuleCustomUi;
 class RuleGlobe;
 class RuleConverter;
 class SoundDefinition;
@@ -197,6 +198,7 @@ private:
 	std::map<std::string, UfoTrajectory *> _ufoTrajectories;
 	std::map<std::string, RuleAlienMission *> _alienMissions;
 	std::map<std::string, RuleInterface *> _interfaces;
+	std::map<std::string, RuleCustomUi *> _customUis;
 	std::map<std::string, SoundDefinition *> _soundDefs;
 	std::map<std::string, RuleVideo *>_videos;
 	std::map<std::string, MCDPatch *> _MCDPatches;
@@ -316,7 +318,7 @@ private:
 	std::vector<std::string> _countriesIndex, _extraGlobeLabelsIndex, _regionsIndex, _facilitiesIndex, _craftsIndex, _craftWeaponsIndex, _itemCategoriesIndex, _itemsIndex, _invsIndex, _ufosIndex;
 	std::vector<std::string> _aliensIndex, _enviroEffectsIndex, _startingConditionsIndex, _deploymentsIndex, _armorsIndex, _ufopaediaIndex, _ufopaediaCatIndex, _researchIndex, _manufactureIndex;
 	std::vector<std::string> _skillsIndex, _soldiersIndex, _soldierTransformationIndex, _soldierBonusIndex;
-	std::vector<std::string> _alienMissionsIndex, _terrainIndex, _customPalettesIndex, _arcScriptIndex, _eventScriptIndex, _eventIndex, _missionScriptIndex, _adhocScriptIndex;
+	std::vector<std::string> _alienMissionsIndex, _terrainIndex, _customPalettesIndex, _customUisIndex, _arcScriptIndex, _eventScriptIndex, _eventIndex, _missionScriptIndex, _adhocScriptIndex;
 	std::vector<std::vector<int> > _alienItemLevels;
 	std::vector<std::array<SDL_Color, TransparenciesOpacityLevels>> _transparencies;
 	int _facilityListOrder, _craftListOrder, _itemCategoryListOrder, _itemListOrder, _armorListOrder, _alienRaceListOrder, _researchListOrder,  _manufactureListOrder;
@@ -1084,6 +1086,10 @@ public:
 	int getPediaReplaceCraftFuelWithRangeType() const;
 	/// Gets information on an interface element.
 	RuleInterface *getInterface(const std::string &id, bool error = true) const;
+	/// Gets a declarative custom UI.
+	RuleCustomUi *getCustomUi(const std::string &id, bool error = true) const;
+	/// Gets custom UI ids in ruleset load order.
+	const std::vector<std::string> &getCustomUiList() const;
 	/// Gets the ruleset for the globe.
 	RuleGlobe *getGlobe() const;
 	/// Gets the ruleset for the converter.

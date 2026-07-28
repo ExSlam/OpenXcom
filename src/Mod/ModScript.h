@@ -68,6 +68,7 @@ class SavedBattleGame;
 class SavedGame;
 
 class StatsForNerdsState;
+class CustomUiState;
 
 
 /**
@@ -317,6 +318,15 @@ class ModScript
 		ApplySoldierBonusesParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
 
+	////////////////////////////////////////////////////////////
+	//					custom UI script
+	////////////////////////////////////////////////////////////
+
+	struct CustomUiActionParser : ScriptParserEvents<ScriptOutputArgs<>, CustomUiState*, ScriptText, ScriptText, ScriptText, ScriptText, SavedGame*, SavedBattleGame*>
+	{
+		CustomUiActionParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
+	};
+
 public:
 	/// Get shared state.
 	const ScriptGlobal* getShared() const
@@ -443,6 +453,8 @@ public:
 
 	using ApplySoldierBonuses = MACRO_NAMED_SCRIPT("applySoldierBonuses", ApplySoldierBonusesParser);
 
+	using CustomUiAction = MACRO_NAMED_SCRIPT("customUiAction", CustomUiActionParser);
+
 	////////////////////////////////////////////////////////////
 	//					groups
 	////////////////////////////////////////////////////////////
@@ -547,6 +559,10 @@ public:
 		ApplySoldierBonuses
 	>;
 
+	using CustomUiScripts = ScriptGroup<Mod,
+		CustomUiAction
+	>;
+
 	////////////////////////////////////////////////////////////
 	//					members
 	////////////////////////////////////////////////////////////
@@ -558,6 +574,7 @@ public:
 	UfoScripts ufoScripts = { _shared, _mod, "ufo" };
 	CraftScripts craftScripts = { _shared, _mod, "craft" };
 	SoldierBonusScripts soldierBonusScripts = { _shared, _mod, "soldier" };
+	CustomUiScripts customUiScripts = { _shared, _mod, "customUi" };
 
 
 	////////////////////////////////////////////////////////////

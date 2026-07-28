@@ -254,6 +254,9 @@ set ( interface_src
 set ( menu_src
   Menu/AbandonGameState.cpp
   Menu/ConfirmLoadState.cpp
+  Menu/CustomUiDataProvider.cpp
+  Menu/CustomUiListState.cpp
+  Menu/CustomUiState.cpp
   Menu/CutsceneState.cpp
   Menu/DeleteGameState.cpp
   Menu/ErrorMessageState.cpp
@@ -316,6 +319,7 @@ set ( mod_src
   Mod/RuleCountry.cpp
   Mod/RuleCraft.cpp
   Mod/RuleCraftWeapon.cpp
+  Mod/RuleCustomUi.cpp
   Mod/RuleDamageType.cpp
   Mod/RuleEnviroEffects.cpp
   Mod/RuleEvent.cpp
@@ -457,7 +461,14 @@ set ( c_src
   ../libs/miniz/miniz.c
 )
 set_property ( SOURCE ${c_src} APPEND PROPERTY COMPILE_DEFINITIONS MINIZ_NO_STDIO )
-set_property ( SOURCE Engine/Scalers/xbrz.cpp APPEND_STRING PROPERTY COMPILE_FLAGS -Wno-unused\ )
+if ( NOT MSVC )
+  set_property ( SOURCE Engine/Scalers/xbrz.cpp APPEND_STRING PROPERTY COMPILE_FLAGS -Wno-unused\ )
+endif ()
+if ( MSVC )
+  # Several template-heavy translation units exceed COFF's default section
+  # limit in Debug builds. Keep CMake in line with OpenXcom.2010.vcxproj.
+  set_property ( SOURCE ${cxx_src} APPEND_STRING PROPERTY COMPILE_FLAGS /bigobj\ )
+endif ()
 
 set ( data_install_dir bin )
 if ( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
@@ -620,8 +631,10 @@ if (${CMAKE_SYSTEM_NAME} MATCHES FreeBSD OR ${CMAKE_SYSTEM_NAME} MATCHES NetBSD 
   set ( system_libs -lexecinfo )
 endif ()
 
-if (WIN32)
+if (MINGW)
   set(CMAKE_EXE_LINKER_FLAGS -Wl,--export-all-symbols)
+endif()
+if (WIN32)
   set(WIN32_LIBS imagehlp dbghelp)
 endif(WIN32)
 
@@ -644,7 +657,7 @@ if ( NOT EMBED_ASSETS )
     else ()
       add_custom_command ( TARGET openxcom
         POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/bin/${binpath} ${EXECUTABLE_OUTPUT_PATH}/${binpath}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/bin/${binpath} $<TARGET_FILE_DIR:openxcom>/${binpath}
 	    VERBATIM )
       install ( DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${binpath} DESTINATION ${data_install_dir} )
     endif ()
@@ -661,7 +674,7 @@ if ( WIN32 )
   foreach ( dll ${Windows_dll} )
     add_custom_command ( TARGET openxcom
       POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy ${dll} ${EXECUTABLE_OUTPUT_PATH}
+      COMMAND ${CMAKE_COMMAND} -E copy ${dll} $<TARGET_FILE_DIR:openxcom>
 	  VERBATIM )
     install ( FILES ${dll} DESTINATION bin)
   endforeach()

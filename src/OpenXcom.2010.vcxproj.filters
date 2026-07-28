@@ -690,6 +690,15 @@
     <ClCompile Include="Menu\CutsceneState.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Menu\CustomUiDataProvider.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu\CustomUiListState.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu\CustomUiState.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
     <ClCompile Include="Menu\SlideshowState.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
@@ -835,6 +844,9 @@
       <Filter>Mod</Filter>
     </ClCompile>
     <ClCompile Include="Mod\RuleCountry.cpp">
+      <Filter>Mod</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\RuleCustomUi.cpp">
       <Filter>Mod</Filter>
     </ClCompile>
     <ClCompile Include="Mod\RuleCraft.cpp">
@@ -1936,6 +1948,15 @@
     <ClInclude Include="Menu\CutsceneState.h">
       <Filter>Menu</Filter>
     </ClInclude>
+    <ClInclude Include="Menu\CustomUiDataProvider.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu\CustomUiListState.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu\CustomUiState.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
     <ClInclude Include="Menu\SlideshowState.h">
       <Filter>Menu</Filter>
     </ClInclude>
@@ -2091,6 +2112,9 @@
       <Filter>Mod</Filter>
     </ClInclude>
     <ClInclude Include="Mod\RuleCountry.h">
+      <Filter>Mod</Filter>
+    </ClInclude>
+    <ClInclude Include="Mod\RuleCustomUi.h">
       <Filter>Mod</Filter>
     </ClInclude>
     <ClInclude Include="Mod\RuleCraft.h">
