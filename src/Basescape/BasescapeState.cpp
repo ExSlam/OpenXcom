@@ -34,6 +34,7 @@
 #include "../Savegame/Region.h"
 #include "../Mod/RuleRegion.h"
 #include "../Menu/ErrorMessageState.h"
+#include "../Menu/CustomUiListState.h"
 #include "DismantleFacilityState.h"
 #include "../Geoscape/BuildNewBaseState.h"
 #include "../Engine/Action.h"
@@ -51,6 +52,7 @@
 #include "../Geoscape/AllocatePsiTrainingState.h"
 #include "../Geoscape/AllocateTrainingState.h"
 #include "../Mod/RuleInterface.h"
+#include "../Mod/RuleCustomUi.h"
 #include "PlaceFacilityState.h"
 #include "../Ufopaedia/Ufopaedia.h"
 #include "../Battlescape/BattlescapeGenerator.h"
@@ -68,8 +70,18 @@ namespace OpenXcom
  * @param base Pointer to the base to get info from.
  * @param globe Pointer to the Geoscape globe.
  */
-BasescapeState::BasescapeState(Base *base, Globe *globe) : _base(base), _globe(globe)
+BasescapeState::BasescapeState(Base *base, Globe *globe) : _btnCustomUis(nullptr), _base(base), _globe(globe)
 {
+	bool hasCustomUis = false;
+	for (const auto &id : _game->getMod()->getCustomUiList())
+	{
+		if (_game->getMod()->getCustomUi(id)->getContext() == CUSTOM_UI_BASESCAPE)
+		{
+			hasCustomUis = true;
+			break;
+		}
+	}
+
 	// Create objects
 	_txtFacility = new Text(192, 9, 0, 0);
 	_view = new BaseView(192, 192, 0, 8);
@@ -87,7 +99,15 @@ BasescapeState::BasescapeState(Base *base, Globe *globe) : _base(base), _globe(g
 	_btnTransfer = new TextButton(128, 12, 192, 149);
 	_btnPurchase = new TextButton(128, 12, 192, 162);
 	_btnSell = new TextButton(128, 12, 192, 175);
-	_btnGeoscape = new TextButton(128, 12, 192, 188);
+	if (hasCustomUis)
+	{
+		_btnCustomUis = new TextButton(64, 12, 192, 188);
+		_btnGeoscape = new TextButton(64, 12, 256, 188);
+	}
+	else
+	{
+		_btnGeoscape = new TextButton(128, 12, 192, 188);
+	}
 
 	// Set palette
 	setInterface("basescape");
@@ -108,6 +128,10 @@ BasescapeState::BasescapeState(Base *base, Globe *globe) : _base(base), _globe(g
 	add(_btnTransfer, "button", "basescape");
 	add(_btnPurchase, "button", "basescape");
 	add(_btnSell, "button", "basescape");
+	if (_btnCustomUis)
+	{
+		add(_btnCustomUis, "button", "basescape");
+	}
 	add(_btnGeoscape, "button", "basescape");
 
 	centerAllSurfaces();
@@ -188,6 +212,12 @@ BasescapeState::BasescapeState(Base *base, Globe *globe) : _base(base), _globe(g
 	_btnGeoscape->setText(tr("STR_GEOSCAPE_UC"));
 	_btnGeoscape->onMouseClick((ActionHandler)&BasescapeState::btnGeoscapeClick);
 	_btnGeoscape->onKeyboardPress((ActionHandler)&BasescapeState::btnGeoscapeClick, Options::keyCancel);
+
+	if (_btnCustomUis)
+	{
+		_btnCustomUis->setText(tr("STR_CUSTOM_UIS_SHORT"));
+		_btnCustomUis->onMouseClick((ActionHandler)&BasescapeState::btnCustomUisClick);
+	}
 }
 
 /**
@@ -385,6 +415,11 @@ void BasescapeState::btnTransferClick(Action *)
 void BasescapeState::btnGeoscapeClick(Action *)
 {
 	_game->popState();
+}
+
+void BasescapeState::btnCustomUisClick(Action *)
+{
+	_game->pushState(new CustomUiListState(CUSTOM_UI_BASESCAPE, nullptr, _base));
 }
 
 /**

@@ -37,6 +37,7 @@ private:
 	TextButton *_btnOk;
 	TextButton *_btnTouch, *_btnNightVision, *_btnPersonalLights, *_btnBrightness, *_btnTurnDiary, *_btnBriefing, *_btnNotes, *_btnMusic;
 	TextButton *_btnKillAll;
+	TextButton *_btnCustomUis;
 	Window *_window;
 	Text *_txtTitle;
 	BattlescapeState *_parent;
@@ -56,6 +57,7 @@ public:
 	void btnNotesClick(Action* action);
 	void btnMusicClick(Action* action);
 	void btnKillAllClick(Action* action);
+	void btnCustomUisClick(Action* action);
 	void btnOkClick(Action* action);
 };
 

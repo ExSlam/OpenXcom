@@ -160,6 +160,8 @@ public:
 	/// Handler for clicking the Show Layers button.
 	void btnShowLayersClick(Action *action);
 	void btnShowLayersClickOrig(Action *action);
+	/// Handler for opening Battlescape ruleset-provided custom interfaces.
+	void btnCustomUisClick(Action *action);
 	/// Handler for clicking the Ufopaedia button.
 	void btnUfopaediaClick(Action *action);
 	/// Handler for clicking the Help button.

@@ -42,6 +42,7 @@ private:
 	Text *_txtFacility, *_txtLocation, *_txtFunds;
 	TextEdit *_edtBase;
 	TextButton *_btnNewBase, *_btnBaseInfo, *_btnSoldiers, *_btnCrafts, *_btnFacilities, *_btnResearch, *_btnManufacture, *_btnTransfer, *_btnPurchase, *_btnSell, *_btnGeoscape;
+	TextButton *_btnCustomUis;
 	Base *_base;
 	Globe *_globe;
 public:
@@ -75,6 +76,8 @@ public:
 	void btnTransferClick(Action *action);
 	/// Handler for clicking the Geoscape button.
 	void btnGeoscapeClick(Action *action);
+	/// Handler for opening base-management custom UIs.
+	void btnCustomUisClick(Action *action);
 	/// Handler for clicking the base view.
 	void viewLeftClick(Action *action);
 	/// Handler for right clicking the base view.

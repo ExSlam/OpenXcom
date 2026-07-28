@@ -27,6 +27,7 @@
 #include "../Engine/Game.h"
 #include "../Engine/Action.h"
 #include "../Mod/Mod.h"
+#include "../Mod/RuleCustomUi.h"
 #include "../Engine/LocalizedText.h"
 #include "../Engine/Screen.h"
 #include "../Engine/Sound.h"
@@ -57,6 +58,7 @@
 #include "../Savegame/Soldier.h"
 #include "../Savegame/SoldierDiary.h"
 #include "../Menu/PauseState.h"
+#include "../Menu/CustomUiListState.h"
 #include "SelectMusicTrackState.h"
 #include "UfoTrackerState.h"
 #include "InterceptState.h"
@@ -142,10 +144,19 @@ namespace OpenXcom
  * Initializes all the elements in the Geoscape screen.
  * @param game Pointer to the core game.
  */
-GeoscapeState::GeoscapeState() : _pause(false), _zoomInEffectDone(false), _zoomOutEffectDone(false), _minimizedDogfights(0), _slowdownCounter(0)
+GeoscapeState::GeoscapeState() : _btnCustomUis(nullptr), _pause(false), _zoomInEffectDone(false), _zoomOutEffectDone(false), _minimizedDogfights(0), _slowdownCounter(0)
 {
 	int screenWidth = Options::baseXGeoscape;
 	int screenHeight = Options::baseYGeoscape;
+	bool hasCustomUis = false;
+	for (const auto &id : _game->getMod()->getCustomUiList())
+	{
+		if (_game->getMod()->getCustomUi(id)->getContext() == CUSTOM_UI_GEOSCAPE)
+		{
+			hasCustomUis = true;
+			break;
+		}
+	}
 
 	// Create objects
 	Surface *hd = _game->getMod()->getSurface("ALTGEOBORD.SCR");
@@ -162,7 +173,15 @@ GeoscapeState::GeoscapeState() : _pause(false), _zoomInEffectDone(false), _zoomO
 	_btnGraphs = new TextButton(63, 11, screenWidth-63, screenHeight/2-76);
 	_btnUfopaedia = new TextButton(63, 11, screenWidth-63, screenHeight/2-64);
 	_btnOptions = new TextButton(63, 11, screenWidth-63, screenHeight/2-52);
-	_btnFunding = new TextButton(63, 11, screenWidth-63, screenHeight/2-40);
+	if (hasCustomUis)
+	{
+		_btnFunding = new TextButton(31, 11, screenWidth-63, screenHeight/2-40);
+		_btnCustomUis = new TextButton(31, 11, screenWidth-31, screenHeight/2-40);
+	}
+	else
+	{
+		_btnFunding = new TextButton(63, 11, screenWidth-63, screenHeight/2-40);
+	}
 
 	_btn5Secs = new TextButton(31, 13, screenWidth-63, screenHeight/2+12);
 	_btn1Min = new TextButton(31, 13, screenWidth-31, screenHeight/2+12);
@@ -226,6 +245,10 @@ GeoscapeState::GeoscapeState() : _pause(false), _zoomInEffectDone(false), _zoomO
 	add(_btnUfopaedia, "button", "geoscape");
 	add(_btnOptions, "button", "geoscape");
 	add(_btnFunding, "button", "geoscape");
+	if (_btnCustomUis)
+	{
+		add(_btnCustomUis, "button", "geoscape");
+	}
 
 	add(_btn5Secs, "button", "geoscape");
 	add(_btn1Min, "button", "geoscape");
@@ -310,10 +333,19 @@ GeoscapeState::GeoscapeState() : _pause(false), _zoomInEffectDone(false), _zoomO
 	_btnOptions->setGeoscapeButton(true);
 
 	_btnFunding->initText(_game->getMod()->getFont("FONT_GEO_BIG"), _game->getMod()->getFont("FONT_GEO_SMALL"), _game->getLanguage());
-	_btnFunding->setText(Options::oxceLinks ? tr("STR_EXTENDED_UC") : tr("STR_FUNDING_UC"));
+	_btnFunding->setText(_btnCustomUis
+		? (Options::oxceLinks ? tr("STR_EXTENDED_SHORT") : tr("STR_FUNDING_SHORT"))
+		: (Options::oxceLinks ? tr("STR_EXTENDED_UC") : tr("STR_FUNDING_UC")));
 	_btnFunding->onMouseClick((ActionHandler)&GeoscapeState::btnFundingClick);
 	_btnFunding->onKeyboardPress((ActionHandler)&GeoscapeState::btnFundingClick, Options::keyGeoFunding);
 	_btnFunding->setGeoscapeButton(true);
+	if (_btnCustomUis)
+	{
+		_btnCustomUis->initText(_game->getMod()->getFont("FONT_GEO_BIG"), _game->getMod()->getFont("FONT_GEO_SMALL"), _game->getLanguage());
+		_btnCustomUis->setText(tr("STR_CUSTOM_UIS_SHORT"));
+		_btnCustomUis->onMouseClick((ActionHandler)&GeoscapeState::btnCustomUisClick);
+		_btnCustomUis->setGeoscapeButton(true);
+	}
 
 	_btn5Secs->initText(_game->getMod()->getFont("FONT_GEO_BIG"), _game->getMod()->getFont("FONT_GEO_SMALL"), _game->getLanguage());
 	_btn5Secs->setBig();
@@ -3169,6 +3201,15 @@ void GeoscapeState::btnFundingClick(Action *)
 	{
 		_game->pushState(new FundingState);
 	}
+}
+
+void GeoscapeState::btnCustomUisClick(Action *)
+{
+	if (buttonsDisabled())
+	{
+		return;
+	}
+	_game->pushState(new CustomUiListState(CUSTOM_UI_GEOSCAPE));
 }
 
 /**

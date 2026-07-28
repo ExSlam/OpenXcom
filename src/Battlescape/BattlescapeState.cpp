@@ -64,10 +64,12 @@
 #include "../Interface/BattlescapeButton.h"
 #include "../Interface/NumberText.h"
 #include "../Menu/CutsceneState.h"
+#include "../Menu/CustomUiListState.h"
 #include "../Menu/PauseState.h"
 #include "../Menu/LoadGameState.h"
 #include "../Menu/SaveGameState.h"
 #include "../Mod/Mod.h"
+#include "../Mod/RuleCustomUi.h"
 #include "../Mod/RuleItem.h"
 #include "../Mod/AlienDeployment.h"
 #include "../Mod/Armor.h"
@@ -509,7 +511,22 @@ BattlescapeState::BattlescapeState() :
 	_btnNextStop->onMouseOut((ActionHandler)&BattlescapeState::txtTooltipOut);
 
 	_btnShowLayers->onMouseClick((ActionHandler)&BattlescapeState::btnShowLayersClick);
-	_btnShowLayers->setTooltip(Options::oxceLinks ? "STR_EXTENDED_LINKS" : "STR_MULTI_LEVEL_VIEW");
+	bool hasCustomUis = false;
+	for (const auto &id : _game->getMod()->getCustomUiList())
+	{
+		if (_game->getMod()->getCustomUi(id)->getContext() == CUSTOM_UI_BATTLESCAPE)
+		{
+			hasCustomUis = true;
+			break;
+		}
+	}
+	if (hasCustomUis)
+	{
+		_btnShowLayers->onMouseClick((ActionHandler)&BattlescapeState::btnCustomUisClick, SDL_BUTTON_RIGHT);
+	}
+	_btnShowLayers->setTooltip(hasCustomUis
+		? (Options::oxceLinks ? "STR_EXTENDED_LINKS_CUSTOM_UIS" : "STR_MULTI_LEVEL_VIEW_CUSTOM_UIS")
+		: (Options::oxceLinks ? "STR_EXTENDED_LINKS" : "STR_MULTI_LEVEL_VIEW"));
 	_btnShowLayers->onMouseIn((ActionHandler)&BattlescapeState::txtTooltipIn);
 	_btnShowLayers->onMouseOut((ActionHandler)&BattlescapeState::txtTooltipOut);
 	_btnShowLayers->onKeyboardPress((ActionHandler)&BattlescapeState::btnShowLayersClickOrig, Options::keyBattleShowLayers);
@@ -1415,6 +1432,11 @@ void BattlescapeState::btnShowLayersClick(Action *)
 void BattlescapeState::btnShowLayersClickOrig(Action *)
 {
 	_numLayers->setValue(_map->getCamera()->toggleShowAllLayers());
+}
+
+void BattlescapeState::btnCustomUisClick(Action *)
+{
+	_game->pushState(new CustomUiListState(CUSTOM_UI_BATTLESCAPE, _save));
 }
 
 /**

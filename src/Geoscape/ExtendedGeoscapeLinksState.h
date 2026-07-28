@@ -36,6 +36,7 @@ private:
 	TextButton *_btnOk;
 	TextButton *_btnFunding, *_btnTechTree, *_btnGlobalResearch, *_btnGlobalProduction, *_btnUfoTracker, *_btnPilotExp, *_btnNotes, *_btnMusic;
 	TextButton *_btnTest;
+	TextButton *_btnCustomUis;
 	Window *_window;
 	Text *_txtTitle;
 	GeoscapeState *_parent;
@@ -54,6 +55,7 @@ public:
 	void btnNotesClick(Action* action);
 	void btnMusicClick(Action* action);
 	void btnTestClick(Action* action);
+	void btnCustomUisClick(Action* action);
 	void btnOkClick(Action* action);
 };
 

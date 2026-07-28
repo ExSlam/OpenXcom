@@ -32,8 +32,10 @@
 #include "../Interface/Window.h"
 #include "../Interface/Text.h"
 #include "../Interface/TextButton.h"
+#include "../Menu/CustomUiListState.h"
 #include "../Menu/NotesState.h"
 #include "../Mod/Mod.h"
+#include "../Mod/RuleCustomUi.h"
 #include "../Savegame/HitLog.h"
 #include "../Savegame/SavedBattleGame.h"
 
@@ -43,38 +45,84 @@ namespace OpenXcom
 /**
  * Initializes all the elements in the ExtendedBattlescapeLinksState screen.
  */
-ExtendedBattlescapeLinksState::ExtendedBattlescapeLinksState(BattlescapeState* parent, SavedBattleGame* save) : _parent(parent), _save(save)
+ExtendedBattlescapeLinksState::ExtendedBattlescapeLinksState(BattlescapeState* parent, SavedBattleGame* save) : _btnCustomUis(nullptr), _parent(parent), _save(save)
 {
 	_screen = false;
 
-	// Create objects
-	_window = new Window(this, 256, 180, 32, 10, POPUP_BOTH);
-	_txtTitle = new Text(220, 17, 50, 33);
-	if (Options::oxceFatFingerLinks)
+	bool hasCustomUis = false;
+	for (const auto &id : _game->getMod()->getCustomUiList())
 	{
-		_btnTouch = new TextButton(116, 25, 44, 50);
-		_btnNightVision = new TextButton(116, 25, 161, 50);
-		_btnPersonalLights = new TextButton(116, 25, 44, 76);
-		_btnBrightness = new TextButton(116, 25, 161, 76);
-		_btnTurnDiary = new TextButton(116, 25, 44, 102);
-		_btnBriefing = new TextButton(116, 25, 161, 102);
-		_btnNotes = new TextButton(116, 25, 44, 128);
-		_btnMusic = new TextButton(116, 25, 161, 128);
-		_btnKillAll = new TextButton(116, 25, 44, 154);
-		_btnOk = new TextButton(116, 25, 161, 154);
+		if (_game->getMod()->getCustomUi(id)->getContext() == CUSTOM_UI_BATTLESCAPE)
+		{
+			hasCustomUis = true;
+			break;
+		}
+	}
+
+	// Create objects
+	if (hasCustomUis)
+	{
+		_window = new Window(this, 256, 192, 32, 4, POPUP_BOTH);
+		_txtTitle = new Text(220, 17, 50, 14);
+		if (Options::oxceFatFingerLinks)
+		{
+			_btnTouch = new TextButton(116, 25, 44, 35);
+			_btnNightVision = new TextButton(116, 25, 161, 35);
+			_btnPersonalLights = new TextButton(116, 25, 44, 61);
+			_btnBrightness = new TextButton(116, 25, 161, 61);
+			_btnTurnDiary = new TextButton(116, 25, 44, 87);
+			_btnBriefing = new TextButton(116, 25, 161, 87);
+			_btnNotes = new TextButton(116, 25, 44, 113);
+			_btnMusic = new TextButton(116, 25, 161, 113);
+			_btnKillAll = new TextButton(116, 25, 44, 139);
+			_btnCustomUis = new TextButton(116, 25, 161, 139);
+			_btnOk = new TextButton(233, 25, 44, 165);
+		}
+		else
+		{
+			_btnTouch = new TextButton(220, 12, 50, 34);
+			_btnNightVision = new TextButton(220, 12, 50, 47);
+			_btnPersonalLights = new TextButton(220, 12, 50, 60);
+			_btnBrightness = new TextButton(220, 12, 50, 73);
+			_btnTurnDiary = new TextButton(220, 12, 50, 86);
+			_btnBriefing = new TextButton(220, 12, 50, 99);
+			_btnNotes = new TextButton(220, 12, 50, 112);
+			_btnMusic = new TextButton(220, 12, 50, 125);
+			_btnKillAll = new TextButton(220, 12, 50, 138);
+			_btnCustomUis = new TextButton(220, 12, 50, 151);
+			_btnOk = new TextButton(220, 12, 50, 164);
+		}
 	}
 	else
 	{
-		_btnTouch = new TextButton(220, 12, 50, 50);
-		_btnNightVision = new TextButton(220, 12, 50, 63);
-		_btnPersonalLights = new TextButton(220, 12, 50, 76);
-		_btnBrightness = new TextButton(220, 12, 50, 89);
-		_btnTurnDiary = new TextButton(220, 12, 50, 102);
-		_btnBriefing = new TextButton(220, 12, 50, 115);
-		_btnNotes = new TextButton(220, 12, 50, 128);
-		_btnMusic = new TextButton(220, 12, 50, 141);
-		_btnKillAll = new TextButton(220, 12, 50, 154);
-		_btnOk = new TextButton(220, 12, 50, 167);
+		_window = new Window(this, 256, 180, 32, 10, POPUP_BOTH);
+		_txtTitle = new Text(220, 17, 50, 33);
+		if (Options::oxceFatFingerLinks)
+		{
+			_btnTouch = new TextButton(116, 25, 44, 50);
+			_btnNightVision = new TextButton(116, 25, 161, 50);
+			_btnPersonalLights = new TextButton(116, 25, 44, 76);
+			_btnBrightness = new TextButton(116, 25, 161, 76);
+			_btnTurnDiary = new TextButton(116, 25, 44, 102);
+			_btnBriefing = new TextButton(116, 25, 161, 102);
+			_btnNotes = new TextButton(116, 25, 44, 128);
+			_btnMusic = new TextButton(116, 25, 161, 128);
+			_btnKillAll = new TextButton(116, 25, 44, 154);
+			_btnOk = new TextButton(116, 25, 161, 154);
+		}
+		else
+		{
+			_btnTouch = new TextButton(220, 12, 50, 50);
+			_btnNightVision = new TextButton(220, 12, 50, 63);
+			_btnPersonalLights = new TextButton(220, 12, 50, 76);
+			_btnBrightness = new TextButton(220, 12, 50, 89);
+			_btnTurnDiary = new TextButton(220, 12, 50, 102);
+			_btnBriefing = new TextButton(220, 12, 50, 115);
+			_btnNotes = new TextButton(220, 12, 50, 128);
+			_btnMusic = new TextButton(220, 12, 50, 141);
+			_btnKillAll = new TextButton(220, 12, 50, 154);
+			_btnOk = new TextButton(220, 12, 50, 167);
+		}
 	}
 
 	// Set palette
@@ -93,6 +141,10 @@ ExtendedBattlescapeLinksState::ExtendedBattlescapeLinksState(BattlescapeState* p
 	add(_btnNotes, "button", "oxceLinks");
 	add(_btnMusic, "button", "oxceLinks");
 	add(_btnKillAll, "button", "oxceLinks");
+	if (_btnCustomUis)
+	{
+		add(_btnCustomUis, "button", "oxceLinks");
+	}
 
 	centerAllSurfaces();
 
@@ -140,6 +192,12 @@ ExtendedBattlescapeLinksState::ExtendedBattlescapeLinksState(BattlescapeState* p
 		_btnKillAll->setText(tr("STR_MULTI_LEVEL_VIEW"));
 	}
 	_btnKillAll->onMouseClick((ActionHandler)&ExtendedBattlescapeLinksState::btnKillAllClick);
+
+	if (_btnCustomUis)
+	{
+		_btnCustomUis->setText(tr("STR_CUSTOM_UIS"));
+		_btnCustomUis->onMouseClick((ActionHandler)&ExtendedBattlescapeLinksState::btnCustomUisClick);
+	}
 
 	applyBattlescapeTheme("oxceLinks");
 }
@@ -234,6 +292,12 @@ void ExtendedBattlescapeLinksState::btnKillAllClick(Action *)
 		_save->setDebugMode();
 		_parent->debug("Debug Mode");
 	}
+}
+
+void ExtendedBattlescapeLinksState::btnCustomUisClick(Action *)
+{
+	_game->popState();
+	_game->pushState(new CustomUiListState(CUSTOM_UI_BATTLESCAPE, _save));
 }
 
 /**

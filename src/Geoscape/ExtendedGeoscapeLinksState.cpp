@@ -28,8 +28,11 @@
 #include "../Interface/Window.h"
 #include "../Interface/Text.h"
 #include "../Interface/TextButton.h"
+#include "../Menu/CustomUiListState.h"
 #include "../Menu/NotesState.h"
 #include "../Menu/TestState.h"
+#include "../Mod/Mod.h"
+#include "../Mod/RuleCustomUi.h"
 
 namespace OpenXcom
 {
@@ -37,38 +40,84 @@ namespace OpenXcom
 /**
  * Initializes all the elements in the ExtendedGeoscapeLinksState screen.
  */
-ExtendedGeoscapeLinksState::ExtendedGeoscapeLinksState(GeoscapeState* parent) : _parent(parent)
+ExtendedGeoscapeLinksState::ExtendedGeoscapeLinksState(GeoscapeState* parent) : _btnCustomUis(nullptr), _parent(parent)
 {
 	_screen = false;
 
-	// Create objects
-	_window = new Window(this, 256, 180, 32, 10, POPUP_BOTH);
-	_txtTitle = new Text(220, 17, 50, 33);
-	if (Options::oxceFatFingerLinks)
+	bool hasCustomUis = false;
+	for (const auto &id : _game->getMod()->getCustomUiList())
 	{
-		_btnFunding = new TextButton(116, 25, 44, 50);
-		_btnTechTree = new TextButton(116, 25, 161, 50);
-		_btnGlobalResearch = new TextButton(116, 25, 44, 76);
-		_btnGlobalProduction = new TextButton(116, 25, 161, 76);
-		_btnUfoTracker = new TextButton(116, 25, 44, 102);
-		_btnPilotExp = new TextButton(116, 25, 161, 102);
-		_btnNotes = new TextButton(116, 25, 44, 128);
-		_btnMusic = new TextButton(116, 25, 161, 128);
-		_btnTest = new TextButton(116, 25, 44, 154);
-		_btnOk = new TextButton(116, 25, 161, 154);
+		if (_game->getMod()->getCustomUi(id)->getContext() == CUSTOM_UI_GEOSCAPE)
+		{
+			hasCustomUis = true;
+			break;
+		}
+	}
+
+	// Create objects
+	if (hasCustomUis)
+	{
+		_window = new Window(this, 256, 192, 32, 4, POPUP_BOTH);
+		_txtTitle = new Text(220, 17, 50, 14);
+		if (Options::oxceFatFingerLinks)
+		{
+			_btnFunding = new TextButton(116, 25, 44, 35);
+			_btnTechTree = new TextButton(116, 25, 161, 35);
+			_btnGlobalResearch = new TextButton(116, 25, 44, 61);
+			_btnGlobalProduction = new TextButton(116, 25, 161, 61);
+			_btnUfoTracker = new TextButton(116, 25, 44, 87);
+			_btnPilotExp = new TextButton(116, 25, 161, 87);
+			_btnNotes = new TextButton(116, 25, 44, 113);
+			_btnMusic = new TextButton(116, 25, 161, 113);
+			_btnTest = new TextButton(116, 25, 44, 139);
+			_btnCustomUis = new TextButton(116, 25, 161, 139);
+			_btnOk = new TextButton(233, 25, 44, 165);
+		}
+		else
+		{
+			_btnFunding = new TextButton(220, 12, 50, 34);
+			_btnTechTree = new TextButton(220, 12, 50, 47);
+			_btnGlobalResearch = new TextButton(220, 12, 50, 60);
+			_btnGlobalProduction = new TextButton(220, 12, 50, 73);
+			_btnUfoTracker = new TextButton(220, 12, 50, 86);
+			_btnPilotExp = new TextButton(220, 12, 50, 99);
+			_btnNotes = new TextButton(220, 12, 50, 112);
+			_btnMusic = new TextButton(220, 12, 50, 125);
+			_btnTest = new TextButton(220, 12, 50, 138);
+			_btnCustomUis = new TextButton(220, 12, 50, 151);
+			_btnOk = new TextButton(220, 12, 50, 164);
+		}
 	}
 	else
 	{
-		_btnFunding = new TextButton(220, 12, 50, 50);
-		_btnTechTree = new TextButton(220, 12, 50, 63);
-		_btnGlobalResearch = new TextButton(220, 12, 50, 76);
-		_btnGlobalProduction = new TextButton(220, 12, 50, 89);
-		_btnUfoTracker = new TextButton(220, 12, 50, 102);
-		_btnPilotExp = new TextButton(220, 12, 50, 115);
-		_btnNotes = new TextButton(220, 12, 50, 128);
-		_btnMusic = new TextButton(220, 12, 50, 141);
-		_btnTest = new TextButton(220, 12, 50, 154);
-		_btnOk = new TextButton(220, 12, 50, 167);
+		_window = new Window(this, 256, 180, 32, 10, POPUP_BOTH);
+		_txtTitle = new Text(220, 17, 50, 33);
+		if (Options::oxceFatFingerLinks)
+		{
+			_btnFunding = new TextButton(116, 25, 44, 50);
+			_btnTechTree = new TextButton(116, 25, 161, 50);
+			_btnGlobalResearch = new TextButton(116, 25, 44, 76);
+			_btnGlobalProduction = new TextButton(116, 25, 161, 76);
+			_btnUfoTracker = new TextButton(116, 25, 44, 102);
+			_btnPilotExp = new TextButton(116, 25, 161, 102);
+			_btnNotes = new TextButton(116, 25, 44, 128);
+			_btnMusic = new TextButton(116, 25, 161, 128);
+			_btnTest = new TextButton(116, 25, 44, 154);
+			_btnOk = new TextButton(116, 25, 161, 154);
+		}
+		else
+		{
+			_btnFunding = new TextButton(220, 12, 50, 50);
+			_btnTechTree = new TextButton(220, 12, 50, 63);
+			_btnGlobalResearch = new TextButton(220, 12, 50, 76);
+			_btnGlobalProduction = new TextButton(220, 12, 50, 89);
+			_btnUfoTracker = new TextButton(220, 12, 50, 102);
+			_btnPilotExp = new TextButton(220, 12, 50, 115);
+			_btnNotes = new TextButton(220, 12, 50, 128);
+			_btnMusic = new TextButton(220, 12, 50, 141);
+			_btnTest = new TextButton(220, 12, 50, 154);
+			_btnOk = new TextButton(220, 12, 50, 167);
+		}
 	}
 
 	// Set palette
@@ -87,6 +136,10 @@ ExtendedGeoscapeLinksState::ExtendedGeoscapeLinksState(GeoscapeState* parent) : 
 	add(_btnNotes, "button", "oxceLinks");
 	add(_btnMusic, "button", "oxceLinks");
 	add(_btnTest, "button", "oxceLinks");
+	if (_btnCustomUis)
+	{
+		add(_btnCustomUis, "button", "oxceLinks");
+	}
 
 	centerAllSurfaces();
 
@@ -144,6 +197,12 @@ ExtendedGeoscapeLinksState::ExtendedGeoscapeLinksState(GeoscapeState* parent) : 
 		_btnTest->setText(tr("STR_TEST_SCREEN"));
 	}
 	_btnTest->onMouseClick((ActionHandler)&ExtendedGeoscapeLinksState::btnTestClick);
+
+	if (_btnCustomUis)
+	{
+		_btnCustomUis->setText(tr("STR_CUSTOM_UIS"));
+		_btnCustomUis->onMouseClick((ActionHandler)&ExtendedGeoscapeLinksState::btnCustomUisClick);
+	}
 }
 
 void ExtendedGeoscapeLinksState::btnFundingClick(Action *)
@@ -205,6 +264,12 @@ void ExtendedGeoscapeLinksState::btnTestClick(Action *)
 	{
 		_game->pushState(new TestState);
 	}
+}
+
+void ExtendedGeoscapeLinksState::btnCustomUisClick(Action *)
+{
+	_game->popState();
+	_game->pushState(new CustomUiListState(CUSTOM_UI_GEOSCAPE));
 }
 
 /**
