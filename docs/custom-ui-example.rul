@@ -1,0 +1,174 @@
+customUis:
+  - id: STR_CUSTOM_UI_EXAMPLE
+    title: STR_CUSTOM_UI_EXAMPLE
+    context: geoscape
+    interface: geoscape
+    backgroundImage: BACK01.SCR
+    width: 304
+    height: 190
+    autoScrollbars: true
+    position:
+      anchor: center
+      x: 0
+      y: 0
+    values:
+      itemSearch: { type: string, default: "" }
+      sortField: { type: string, default: name }
+      descending: { type: bool, default: false }
+      selectedItem: { type: string, default: "" }
+      amount: { type: int, default: 5 }
+    actions:
+      showDetails:
+        type: openCustomUi
+        target: STR_CUSTOM_UI_EXAMPLE_DETAILS
+        mode: push
+      openStores:
+        type: openNativeUi
+        target: stores
+        mode: push
+      inspectSelection:
+        type: script
+    scripts:
+      customUiAction: |
+        ui.setWidgetText ui "status" "STR_CUSTOM_UI_EXAMPLE_SCRIPT_RAN";
+        return;
+    widgets:
+      - id: itemSearch
+        type: search
+        x: 8
+        y: 28
+        width: 288
+        height: 14
+        bind: itemSearch
+        placeholder: STR_CUSTOM_UI_EXAMPLE_SEARCH
+        maxLength: 40
+        focused: true
+
+      - id: amount
+        type: number
+        x: 8
+        y: 46
+        width: 70
+        height: 14
+        bind: amount
+        minimum: 0
+        maximum: 100
+        step: 1
+        largeStep: 10
+        mouseWheel: true
+
+      - id: amountText
+        type: label
+        x: 86
+        y: 48
+        width: 210
+        height: 10
+        text: STR_CUSTOM_UI_EXAMPLE_AMOUNT
+
+      - id: inventory
+        type: table
+        x: 8
+        y: 64
+        width: 288
+        height: 78
+        source:
+          type: items
+          scope: currentBase
+          includeZero: false
+        search: itemSearch
+        selectedValue: selectedItem
+        sortValue: sortField
+        descendingValue: descending
+        columns:
+          - { field: name, header: STR_CUSTOM_UI_EXAMPLE_NAME, width: 188 }
+          - { field: quantity, header: STR_CUSTOM_UI_EXAMPLE_QUANTITY, width: 48, align: right }
+          - { field: sellCost, header: STR_CUSTOM_UI_EXAMPLE_VALUE, width: 48, align: right }
+        onSelect: inspectSelection
+
+      - id: status
+        type: label
+        x: 8
+        y: 146
+        width: 288
+        height: 12
+        text: STR_CUSTOM_UI_EXAMPLE_STATUS
+        align: center
+        colors:
+          default:
+            text: "#f4d35e"
+
+      - id: details
+        type: button
+        x: 8
+        y: 166
+        width: 68
+        height: 16
+        text: STR_CUSTOM_UI_EXAMPLE_DETAILS_BUTTON
+        action: showDetails
+
+      - id: stores
+        type: button
+        x: 78
+        y: 166
+        width: 68
+        height: 16
+        text: STR_CUSTOM_UI_EXAMPLE_STORES
+        action: openStores
+
+      - id: inspect
+        type: button
+        x: 148
+        y: 166
+        width: 68
+        height: 16
+        text: STR_CUSTOM_UI_EXAMPLE_INSPECT
+        action: inspectSelection
+
+      - id: close
+        type: button
+        x: 218
+        y: 166
+        width: 78
+        height: 16
+        text: STR_OK
+        action: close
+        colors:
+          default:
+            background: 96
+            text: "#ffffff"
+          hover:
+            background: 112
+            text: "#fff2a8"
+          focused:
+            background: 80
+            text: "#ffffff"
+          selected:
+            background: 64
+            text: "#ffffff"
+
+  - id: STR_CUSTOM_UI_EXAMPLE_DETAILS
+    title: STR_CUSTOM_UI_EXAMPLE_DETAILS
+    context: geoscape
+    interface: geoscape
+    width: 240
+    height: 100
+    position: { anchor: center, x: 0, y: 0 }
+    widgets:
+      - id: explanation
+        type: label
+        x: 12
+        y: 32
+        width: 216
+        height: 32
+        text: STR_CUSTOM_UI_EXAMPLE_DETAILS_TEXT
+        align: center
+        wordWrap: true
+      - id: back
+        type: button
+        x: 70
+        y: 72
+        width: 100
+        height: 16
+        text: STR_CUSTOM_UI_EXAMPLE_BACK
+        action: close
+        focused: true
