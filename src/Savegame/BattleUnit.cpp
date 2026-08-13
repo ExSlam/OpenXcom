@@ -347,8 +347,13 @@ void BattleUnit::prepareUnitResponseSounds(const Mod *mod)
 	// lower priority: soldier type / unit type
 	if (_geoscapeSoldier)
 	{
-		auto soldierRules = _geoscapeSoldier->getRules();
-		if (_gender == GENDER_MALE)
+		const auto* soldierRules = _geoscapeSoldier->getRules();
+		const auto* soldierTypeVoiceSet = soldierRules->getRandomVoiceSet(_geoscapeSoldier);
+		if (soldierTypeVoiceSet)
+		{
+			setUnitAndSoldierVoiceSet(soldierTypeVoiceSet);
+		}
+		else if (_gender == GENDER_MALE)
 		{
 			const auto* voiceSetMale = soldierRules->getRandomVoiceSetMale();
 			if (voiceSetMale)
@@ -4989,16 +4994,31 @@ void BattleUnit::setUnitAndSoldierVoiceSet(const RuleVoiceSet* voiceSet)
 {
 	_unitVoiceSet = voiceSet;
 
-	// set also on the soldier if it exists, so that the voice set is persisted beyond a single battle
-	if (_geoscapeSoldier)
+	if (voiceSet)
 	{
-		_geoscapeSoldier->setVoiceSetType(voiceSet->getType());
-	}
+		// set also on the soldier if it exists, so that the voice set is persisted beyond a single battle
+		if (_geoscapeSoldier)
+		{
+			_geoscapeSoldier->setVoiceSetType(voiceSet->getType());
+		}
 
-	_selectUnitSound = voiceSet->getSelectUnitSounds();
-	_startMovingSound = voiceSet->getStartMovingSounds();
-	_selectWeaponSound = voiceSet->getSelectWeaponSounds();
-	_annoyedSound = voiceSet->getAnnoyedSounds();
+		_selectUnitSound = voiceSet->getSelectUnitSounds();
+		_startMovingSound = voiceSet->getStartMovingSounds();
+		_selectWeaponSound = voiceSet->getSelectWeaponSounds();
+		_annoyedSound = voiceSet->getAnnoyedSounds();
+	}
+	else
+	{
+		if (_geoscapeSoldier)
+		{
+			_geoscapeSoldier->setVoiceSetType("");
+		}
+
+		_selectUnitSound = { };
+		_startMovingSound = { };
+		_selectWeaponSound = { };
+		_annoyedSound = { };
+	}
 }
 
 /**

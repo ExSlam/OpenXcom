@@ -4136,6 +4136,8 @@ void StatsForNerdsState::initSoldierList()
 		addBoolean(ss, !soldierRule->getVoiceSetsMaleRaw().empty(), "voiceSetsMale*", false); // just say if there are any or not
 		addBoolean(ss, !soldierRule->getVoiceSetsFemaleRaw().empty(), "voiceSetsFemale*", false); // just say if there are any or not
 
+		addBoolean(ss, !soldierRule->getVoiceSetsRaw().empty(), "voiceSets*", false); // just say if there are any or not
+
 		addSection("{Mod info}", "", _white);
 		{
 			addSingleString(ss, mod->getModCreatingRule(soldierRule)->name, "createdByMod");
