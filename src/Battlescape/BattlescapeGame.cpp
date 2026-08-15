@@ -2492,35 +2492,35 @@ void BattlescapeGame::tallySummonedVIPs()
 		{
 			if (unit->getStatus() == STATUS_DEAD)
 			{
-				_save->addLostVIP(unit->getValue());
+				_save->addLostVIP(unit->getValueVIP());
 			}
 			else if (escapeType == ESCAPE_EXIT)
 			{
 				if (unit->isInExitArea(END_POINT))
-					_save->addSavedVIP(unit->getValue());
+					_save->addSavedVIP(unit->getValueVIP());
 				else
-					_save->addLostVIP(unit->getValue());
+					_save->addLostVIP(unit->getValueVIP());
 			}
 			else if (escapeType == ESCAPE_ENTRY)
 			{
 				if (unit->isInExitArea(START_POINT))
-					_save->addSavedVIP(unit->getValue());
+					_save->addSavedVIP(unit->getValueVIP());
 				else
-					_save->addLostVIP(unit->getValue());
+					_save->addLostVIP(unit->getValueVIP());
 			}
 			else if (escapeType == ESCAPE_EITHER)
 			{
 				if (unit->isInExitArea(START_POINT) || unit->isInExitArea(END_POINT))
-					_save->addSavedVIP(unit->getValue());
+					_save->addSavedVIP(unit->getValueVIP());
 				else
-					_save->addLostVIP(unit->getValue());
+					_save->addLostVIP(unit->getValueVIP());
 			}
 			else //if (escapeType == ESCAPE_NONE)
 			{
 				if (unit->isInExitArea(START_POINT))
-					_save->addSavedVIP(unit->getValue()); // waiting in craft, saved even if aborted
+					_save->addSavedVIP(unit->getValueVIP()); // waiting in craft, saved even if aborted
 				else
-					_save->addWaitingOutsideVIP(unit->getValue()); // waiting outside, lost if aborted
+					_save->addWaitingOutsideVIP(unit->getValueVIP()); // waiting outside, lost if aborted
 			}
 		}
 	}

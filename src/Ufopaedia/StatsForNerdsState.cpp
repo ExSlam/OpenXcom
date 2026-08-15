@@ -4233,7 +4233,12 @@ void StatsForNerdsState::initUnitList()
 		addBoolean(ss, unitRule->waitIfOutsideWeaponRange(), "waitIfOutsideWeaponRange");
 
 		addSection("{Debriefing}", "", _white);
-		addInteger(ss, unitRule->getValue(), "value", 0);
+		addInteger(ss, unitRule->getValueKilled(), "value", 0);
+		addInteger(ss, unitRule->getValueCaptured(), "valueCaptured", 0);
+		addInteger(ss, unitRule->getValueCapturedResearched(), "valueCapturedResearched", 10);
+		addInteger(ss, unitRule->getValueCivilian(), "valueCivilian", 0);
+		addInteger(ss, unitRule->getValueCivilianKilledByXcom(), "valueCivilianKilledByXcom", 0);
+		addInteger(ss, unitRule->getValueVIP(), "valueVIP", 0);
 		addBoolean(ss, unitRule->isRecoverableAsCivilian(), "civilianRecoveryType*"); // just say if there are any or not
 		addBoolean(ss, unitRule->isRecoverableAsScientist(), "_recoverScientist");
 		addBoolean(ss, unitRule->isRecoverableAsEngineer(), "_recoverEngineer");

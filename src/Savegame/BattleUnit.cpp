@@ -98,7 +98,12 @@ BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth, const RuleSt
 	default:             rankbonus =  0; break;
 	}
 
-	_value = soldier->getRules()->getValue() + soldier->getMissions() + rankbonus;
+	_valueKilled = soldier->getRules()->getValue() + soldier->getMissions() + rankbonus;
+	_valueCaptured = 0;
+	_valueCapturedResearched = 0;
+	_valueCivilian = 0;
+	_valueCivilianKilledByXcom = 0;
+	_valueVIP = 0;
 
 
 	for (int i = 0; i < BODYPART_MAX; ++i)
@@ -510,7 +515,12 @@ BattleUnit::BattleUnit(const Mod *mod, const Unit *unit, UnitFaction faction, in
 		_vip = true;
 	}
 
-	_value = unit->getValue();
+	_valueKilled = unit->getValueKilled();
+	_valueCaptured = unit->getValueCaptured();
+	_valueCapturedResearched = unit->getValueCapturedResearched();
+	_valueCivilian = unit->getValueCivilian();
+	_valueCivilianKilledByXcom = unit->getValueCivilianKilledByXcom();
+	_valueVIP = unit->getValueVIP();
 
 
 	for (int i = 0; i < BODYPART_MAX; ++i)
@@ -4478,15 +4488,6 @@ int BattleUnit::getFloatHeight() const
 int BattleUnit::getLoftemps(int entry) const
 {
 	return _loftempsSet.at(entry);
-}
-
-/**
-  * Get the unit's value. Used for score at debriefing.
-  * @return value score
-  */
-int BattleUnit::getValue() const
-{
-	return _value;
 }
 
 /**
