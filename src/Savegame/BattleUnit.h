@@ -437,6 +437,8 @@ public:
 	AIModule *getAIModule() const;
 	/// Set AI Module.
 	void setAIModule(AIModule *ai);
+	/// Increases the AI walk abort counter.
+	void increaseAIWalkAbortCounter();
 	/// Gets weight value as hostile unit.
 	AIAttackWeight getAITargetWeightAsHostile(const Mod *mod) const;
 	/// Gets weight value as civilian unit when consider by aliens.

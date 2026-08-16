@@ -3363,6 +3363,17 @@ AIModule *BattleUnit::getAIModule() const
 }
 
 /**
+ * Increases the AI walk abort counter.
+ */
+void BattleUnit::increaseAIWalkAbortCounter()
+{
+	if (_currentAIState)
+	{
+		_currentAIState->increaseWalkAbortCounter();
+	}
+}
+
+/**
  * Gets weight value as hostile unit.
  */
 AIAttackWeight BattleUnit::getAITargetWeightAsHostile(const Mod *mod) const
