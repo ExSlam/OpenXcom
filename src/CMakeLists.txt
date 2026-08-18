@@ -58,6 +58,7 @@ set ( basescape_src
   Basescape/SoldierTransformationState.cpp
   Basescape/SoldierTransformationListState.cpp
   Basescape/SoldierTransformState.cpp
+  Basescape/SoldierVoiceState.cpp
   Basescape/StoresState.cpp
   Basescape/TechTreeSelectState.cpp
   Basescape/TechTreeViewerState.cpp
@@ -344,6 +345,7 @@ set ( mod_src
   Mod/RuleTerrain.cpp
   Mod/RuleUfo.cpp
   Mod/RuleVideo.cpp
+  Mod/RuleVoiceSet.cpp
   Mod/RuleWeaponSet.cpp
   Mod/SoldierNamePool.cpp
   Mod/SoundDefinition.cpp
