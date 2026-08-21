@@ -1543,11 +1543,11 @@ void Soldier::calcStatString(const std::vector<StatString *> &statStrings, bool 
 {
 	if (_rules->getStatStrings().empty())
 	{
-		_statString = StatString::calcStatString(_currentStats, statStrings, psiStrengthEval, _psiTraining);
+		_statString = StatString::calcStatStringWorker(_currentStats, (int)_rank, statStrings, psiStrengthEval, _psiTraining);
 	}
 	else
 	{
-		_statString = StatString::calcStatString(_currentStats, _rules->getStatStrings(), psiStrengthEval, _psiTraining);
+		_statString = StatString::calcStatStringWorker(_currentStats, (int)_rank, _rules->getStatStrings(), psiStrengthEval, _psiTraining);
 	}
 }
 
