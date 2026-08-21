@@ -377,6 +377,7 @@ void createOptionsOXCE()
 
 	// OXCE hidden but moddable
 	_info.push_back(OptionInfo(OPTION_OXCE, "oxceStartUpTextMode", &oxceStartUpTextMode, 0, "", "HIDDEN"));
+	_info.push_back(OptionInfo(OPTION_OXCE, "oxceMaximizeCutsceneScreens", &oxceMaximizeCutsceneScreens, true, "", "HIDDEN"));
 
 	_info.push_back(OptionInfo(OPTION_OXCE, "oxceGeoscapeDebugLogMaxEntries", &oxceGeoscapeDebugLogMaxEntries, 1000, "", "HIDDEN"));
 	_info.push_back(OptionInfo(OPTION_OXCE, "oxceGeoSlowdownFactor", &oxceGeoSlowdownFactor, 1, "", "HIDDEN"));
