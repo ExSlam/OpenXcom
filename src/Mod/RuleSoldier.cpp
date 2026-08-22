@@ -79,6 +79,8 @@ void RuleSoldier::load(const YAML::YamlNodeReader& node, Mod *mod, const ModScri
 		load(parent, mod, parsers);
 	}
 
+	reader.tryRead("prefix", _prefix);
+
 	//requires
 	mod->loadUnorderedNames(_type, _requires, reader["requires"]);
 	mod->loadBaseFunction(_type, _requiresBuyBaseFunc, reader["requiresBuyBaseFunc"]);

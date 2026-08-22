@@ -4058,6 +4058,7 @@ void StatsForNerdsState::initSoldierList()
 
 		addSection("{Naming}", "", _white);
 		addSingleString(ss, soldierRule->getType(), "type");
+		addSingleString(ss, soldierRule->getPrefix(), "prefix");
 		addBoolean(ss, soldierRule->getShowTypeInInventory(), "showTypeInInventory");
 		addInteger(ss, soldierRule->getNames().size(), "soldierNames*"); // size only
 		addInteger(ss, soldierRule->getFemaleFrequency(), "femaleFrequency", 50);
