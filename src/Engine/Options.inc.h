@@ -130,6 +130,7 @@ OPT std::string password;
 
 // OXCE hidden, but moddable via fixedUserOptions and/or recommendedUserOptions
 OPT int oxceStartUpTextMode;
+OPT bool oxceMaximizeCutsceneScreens;
 
 OPT int oxceGeoscapeDebugLogMaxEntries;
 OPT int oxceGeoSlowdownFactor;

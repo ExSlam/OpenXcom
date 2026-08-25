@@ -65,6 +65,7 @@ public:
 
 private:
 	std::string _type;
+	std::string _prefix;
 	YAML::YamlString _spawnedSoldier;
 	int _group;
 	int _listOrder;
@@ -118,6 +119,8 @@ public:
 	void afterLoad(const Mod* mod);
 	/// Gets the soldier's type.
 	const std::string& getType() const;
+	/// Gets the soldier's name prefix.
+	const std::string& getPrefix() const { return _prefix; }
 	/// Gets the spawned soldier template.
 	const YAML::YamlString& getSpawnedSoldierTemplate() const { return _spawnedSoldier; }
 	/// Gets the soldier type group.
